@@ -38,19 +38,6 @@ class FirestoreRepository{
                     });
                     resolve(listaTarefas);
                 });
-            
-            //  this.collectionReference().doc(id)
-            //      .get()
-            //      .then(doc => {
-            //          if(doc.exists){
-            //              resolve(doc.data()); 
-            //          }else{
-            //              resolve(null);
-            //          }
-            //      })
-            //      .catch(err => {
-            //          reject(err);
-            //      })
         }); 
      }
  

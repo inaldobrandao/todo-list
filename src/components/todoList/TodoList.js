@@ -12,13 +12,6 @@ class TodoList extends Component {
     }
 
     componentDidMount(){
-        // new FirestoreRepository("tarefas")
-        // .read()
-        // .then(lista => {
-        //     console.log(lista);
-        //     this.setState({ listaTarefas : lista })
-        // })
-        // .catch(err => console.error(err))
         const ref = new FirestoreRepository("tarefas").collectionReference();
         const self = this;
         ref
