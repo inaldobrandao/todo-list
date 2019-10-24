@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import TodoList from '../../components/todoList/TodoList';
 import FirestoreRepository from '../../repositories/FirestoreRepository';
 
+const collection = "tarefas";
+
 class Home extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { items: [], description: '' };        
+        this.state = { 
+            items: [],
+            description: ''
+        };        
     }
 
     handleChange = (e) => {
@@ -19,17 +24,31 @@ class Home extends Component {
           return;
         }
         const newItem = {
-          description: this.state.description         
+          description: this.state.description,
+          createAt: new Date()          
         };
         
         this.setState({ items: this.state.items.concat(newItem), description: '' });
 
-        new FirestoreRepository("tarefas")
+        new FirestoreRepository(collection)
             .create(newItem)
             .then(res => {
                 console.log(res)
             })
             .catch(err => console.log(err));
+    }
+
+    deleteTask = (item) => {
+        if(item){
+            new FirestoreRepository(collection)
+                .delete(item.id)
+                .then(() => {
+                    console.log('Item deletado');
+                })
+                .catch(err => console.error(err))
+        }else{
+            console.log('Item inválido')
+        }
     }
     
     render() {
@@ -45,7 +64,7 @@ class Home extends Component {
                         Adicionar
                     </button>
                 </form>
-                <TodoList items={this.state.items}/>
+                <TodoList items={this.state.items} deleteTask={this.deleteTask} />
             </div>
         );
     }

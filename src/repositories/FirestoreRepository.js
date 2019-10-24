@@ -14,10 +14,10 @@ class FirestoreRepository{
 
     create(item){
         return new Promise((resolve, reject)=> {
-            const ref = this.db.collection(this.collection).doc();
+            const ref = this.collectionReference().doc();
             item['id'] = ref.id;
 
-            this.db.collection(this.collection).doc().set(item)
+            ref.set(item)
             .then(() => {
                 resolve();
             })
@@ -29,7 +29,7 @@ class FirestoreRepository{
 
     read() {
         return new Promise(( resolve, reject ) => {
-            this.db.collection(this.collection)
+            this.collectionReference()
                 .onSnapshot(tarefas => {
                     console.log(tarefas)
                     var listaTarefas = [];
@@ -54,16 +54,16 @@ class FirestoreRepository{
         }); 
      }
  
-    //  delete(id){
-    //      return new Promise((resolve, reject) => {
-    //          this.collectionReference().doc(id).delete()
-    //              .then(() => {
-    //                  resolve();
-    //              }).catch( err => {
-    //                  reject(err);
-    //              });
-    //      });
-    //  }
+     delete(id){
+         return new Promise((resolve, reject) => {
+             this.collectionReference().doc(id).delete()
+                 .then(() => {
+                     resolve();
+                 }).catch( err => {
+                     reject(err);
+                 });
+         });
+     }
 }
 
 export default FirestoreRepository;

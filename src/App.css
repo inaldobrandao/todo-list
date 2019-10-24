@@ -75,13 +75,25 @@ input:focus + label {
 }
 
 .btn-submit{
-  background: red;
+  background: #38a534;
   border: none;
   border-radius: 10px;
   padding: 7px;
   font-size: 15px;
   margin-top: 10px;
   color: #fff;
+}
+
+.btn-delete{
+  background: #ff0000;
+    border: none;
+    border-radius: 10px;
+    padding: 4px;
+    font-size: 12px;
+    bottom: 4px;
+    color: #fff;
+    margin-left: 10px;
+    position: relative;
 }
 
 li{

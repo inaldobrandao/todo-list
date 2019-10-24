@@ -21,9 +21,11 @@ class TodoList extends Component {
         // .catch(err => console.error(err))
         const ref = new FirestoreRepository("tarefas").collectionReference();
         const self = this;
-        ref.onSnapshot(tarefas => {
+        ref
+        .orderBy("createAt", "asc")
+        .onSnapshot(tarefas => {
             var listaTarefas = [];
-            tarefas.forEach(function(item) {
+            tarefas.forEach(item => {
                 listaTarefas.push(item.data());
             });
             self.setState({ listaTarefas })
@@ -38,7 +40,12 @@ class TodoList extends Component {
                         <li key={key}>{item.description}</li>
                     ))} */}
                     {this.state.listaTarefas.map( (item, key) => (
-                        <li key={key}>{item.description}</li>
+                        <li key={key}>
+                            {item.description}
+                            <button className="btn-delete" onClick={() => this.props.deleteTask(item)}>
+                                Deletar
+                            </button>
+                        </li>
                     ))}
                 </ul>
             </div>
