@@ -8,47 +8,62 @@ class FirestoreRepository{
         this.db = firebase.firestore();
     }
 
+    collectionReference(){
+        return this.db.collection(this.collection);
+    }
+
     create(item){
         return new Promise((resolve, reject)=> {
-            this.db.collection(this.collection).doc().set({item})
+            const ref = this.db.collection(this.collection).doc();
+            item['id'] = ref.id;
+
+            this.db.collection(this.collection).doc().set(item)
             .then(() => {
-                console.log("Document successfully written!");
                 resolve();
             })
             .catch(error => {
-                console.error("Error writing document: ", error);
                 reject(error);
             });
         })
     }
 
-    read(id) {
+    read() {
         return new Promise(( resolve, reject ) => {
-             this.collectionReference().doc(id)
-                 .get()
-                 .then(doc => {
-                     if(doc.exists){
-                         resolve(doc.data()); 
-                     }else{
-                         resolve(null);
-                     }
-                 })
-                 .catch(err => {
-                     reject(err);
-                 })
+            this.db.collection(this.collection)
+                .onSnapshot(tarefas => {
+                    console.log(tarefas)
+                    var listaTarefas = [];
+                    tarefas.forEach(function(item) {
+                        listaTarefas.push(item.data());
+                    });
+                    resolve(listaTarefas);
+                });
+            
+            //  this.collectionReference().doc(id)
+            //      .get()
+            //      .then(doc => {
+            //          if(doc.exists){
+            //              resolve(doc.data()); 
+            //          }else{
+            //              resolve(null);
+            //          }
+            //      })
+            //      .catch(err => {
+            //          reject(err);
+            //      })
         }); 
      }
  
-     delete(id){
-         return new Promise((resolve, reject) => {
-             this.collectionReference().doc(id).delete()
-                 .then(() => {
-                     resolve();
-                 }).catch( err => {
-                     reject(err);
-                 });
-         });
-     }
+    //  delete(id){
+    //      return new Promise((resolve, reject) => {
+    //          this.collectionReference().doc(id).delete()
+    //              .then(() => {
+    //                  resolve();
+    //              }).catch( err => {
+    //                  reject(err);
+    //              });
+    //      });
+    //  }
 }
 
 export default FirestoreRepository;
